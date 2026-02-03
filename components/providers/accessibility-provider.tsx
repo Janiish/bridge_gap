@@ -64,17 +64,22 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
           setUserId(user.id);
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("context_data")
-            .eq("id", user.id)
-            .single();
+          try {
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("context_data")
+              .eq("id", user.id)
+              .single();
 
-          if (profile?.context_data?.accessibility) {
-            const cloudSettings = profile.context_data.accessibility as AccessibilitySettings;
-            setSettings(cloudSettings);
-            applySettings(cloudSettings);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudSettings));
+            if (profile?.context_data?.accessibility) {
+              const cloudSettings = profile.context_data.accessibility as AccessibilitySettings;
+              setSettings(cloudSettings);
+              applySettings(cloudSettings);
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudSettings));
+            }
+          } catch (supabaseError) {
+            // context_data column may not exist yet, silently continue
+            console.warn("Could not load accessibility settings from Supabase:", supabaseError);
           }
         }
       } catch (e) {
