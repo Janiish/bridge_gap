@@ -6,14 +6,7 @@ import { motion } from "framer-motion";
 import { Phone, PhoneOff, Video, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import dynamic from "next/dynamic";
 import { createClient } from "@/utils/supabase/client";
-
-// Dynamically import ZegoUIKitPrebuilt to avoid SSR issues
-const ZegoUIKitPrebuilt = dynamic(
-  () => import("@zegocloud/zego-uikit-prebuilt").then((mod) => mod.ZegoUIKitPrebuilt),
-  { ssr: false }
-);
 
 // Error State Component
 function ErrorScreen({ error, onRetry }: { error: string; onRetry: () => void }) {
