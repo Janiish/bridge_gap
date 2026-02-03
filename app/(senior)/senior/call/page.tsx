@@ -156,6 +156,7 @@ export default function SeniorCallPage() {
     );
   }
 
+  // Show connecting state
   if (state === "connecting") {
     return (
       <motion.div
@@ -172,6 +173,7 @@ export default function SeniorCallPage() {
         </motion.div>
         <h2 className="text-3xl font-bold text-stone-800 mb-4">Connecting...</h2>
         <p className="text-xl text-stone-600 mb-2">Setting up your video call</p>
+        <p className="text-sm text-stone-500 mb-4">AppID: 1480174957</p>
         <Loader2 className="h-8 w-8 text-green-500 animate-spin mt-4" />
       </motion.div>
     );
