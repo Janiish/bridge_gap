@@ -52,17 +52,17 @@ export default function BuddyLayout({
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 text-slate-900 dark:text-white flex">
       {/* Sidebar */}
       <BuddySidebar />
 
       {/* Main Content */}
-      <div className="flex-1 ml-64">
+      <div className="flex-1 ml-64 flex flex-col">
         {/* Top Bar */}
         <BuddyTopBar title={currentPage?.label} />
 
         {/* Page Content */}
-        <main className="p-6">
+        <main className="flex-1 p-6 overflow-y-auto">
           <PageTransition>
             {children}
           </PageTransition>

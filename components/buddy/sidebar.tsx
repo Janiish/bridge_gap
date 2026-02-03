@@ -32,9 +32,9 @@ export function BuddySidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 w-64 bg-slate-900 border-r border-slate-800 flex flex-col z-50">
+    <aside className="fixed left-0 top-0 bottom-0 w-64 bg-white dark:bg-slate-800/80 dark:backdrop-blur-md border-r border-slate-200 dark:border-slate-700 flex flex-col z-50 shadow-lg">
       {/* Logo */}
-      <div className="p-6 border-b border-slate-800">
+      <div className="p-6 border-b border-slate-200 dark:border-slate-700">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -42,8 +42,8 @@ export function BuddySidebar() {
         >
           <span className="text-2xl">🌉</span>
           <div>
-            <h1 className="text-xl font-bold text-white">Bridge the Gap</h1>
-            <p className="text-slate-400 text-sm">Buddy Dashboard</p>
+            <h1 className="text-xl font-bold text-slate-900 dark:text-white">Bridge Gap</h1>
+            <p className="text-slate-500 dark:text-slate-400 text-sm">Volunteer Hub</p>
           </div>
         </motion.div>
       </div>
@@ -66,14 +66,14 @@ export function BuddySidebar() {
                   <motion.div
                     whileHover={{ x: 4 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                       isActive
-                        ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
-                        : "text-slate-400 hover:text-white hover:bg-slate-800"
+                        ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md dark:shadow-blue-600/20"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700/50"
                     }`}
                   >
                     <Icon className="h-5 w-5" />
-                    <span className="font-medium">{item.label}</span>
+                    <span className="font-medium text-sm">{item.label}</span>
                     {isActive && (
                       <ChevronRight className="h-4 w-4 ml-auto" />
                     )}
@@ -86,16 +86,16 @@ export function BuddySidebar() {
       </nav>
 
       {/* Status Indicator */}
-      <div className="p-4 border-t border-slate-800">
-        <div className="flex items-center gap-3 px-4 py-3 bg-slate-800/50 rounded-xl mb-4">
-          <div className="h-3 w-3 bg-green-400 rounded-full animate-pulse" />
-          <span className="text-sm text-slate-300">Online & Active</span>
+      <div className="p-4 border-t border-slate-200 dark:border-slate-700 space-y-4">
+        <div className="flex items-center gap-3 px-4 py-3 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg border border-emerald-200 dark:border-emerald-700/50">
+          <div className="h-3 w-3 bg-emerald-500 rounded-full animate-pulse" />
+          <span className="text-sm font-medium text-emerald-700 dark:text-emerald-300">Online</span>
         </div>
 
         {/* Logout Button */}
         <Button
-          variant="ghost"
-          className="w-full justify-start text-slate-400 hover:text-white hover:bg-slate-800"
+          variant="outline"
+          className="w-full justify-start text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700"
           onClick={handleLogout}
         >
           <LogOut className="h-5 w-5 mr-3" />
@@ -108,12 +108,12 @@ export function BuddySidebar() {
 
 export function BuddyTopBar({ title }: { title?: string }) {
   return (
-    <header className="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-6 py-4">
+    <header className="sticky top-0 z-40 bg-white dark:bg-slate-800/40 dark:backdrop-blur-md border-b border-slate-200 dark:border-slate-700 px-6 py-4 shadow-sm">
       <div className="flex items-center justify-between">
         <motion.h2
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-lg font-semibold text-white"
+          className="text-2xl font-bold text-slate-900 dark:text-white"
         >
           {title || "Dashboard"}
         </motion.h2>
@@ -121,13 +121,13 @@ export function BuddyTopBar({ title }: { title?: string }) {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="relative p-2 hover:bg-slate-800 rounded-lg transition-colors"
+            className="relative p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
             title="Notifications"
             aria-label="View notifications"
           >
             <div className="h-2 w-2 bg-red-500 rounded-full absolute top-1 right-1" />
             <svg
-              className="h-5 w-5 text-white"
+              className="h-5 w-5 text-slate-700 dark:text-slate-300"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -140,7 +140,7 @@ export function BuddyTopBar({ title }: { title?: string }) {
               />
             </svg>
           </motion.button>
-          <div className="h-9 w-9 bg-blue-600 rounded-full flex items-center justify-center font-semibold text-white">
+          <div className="h-9 w-9 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center font-semibold text-white shadow-md">
             B
           </div>
         </div>

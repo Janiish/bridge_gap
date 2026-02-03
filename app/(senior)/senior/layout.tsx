@@ -14,7 +14,7 @@ export default function SeniorLayout({
   return (
     <AccessibilityProvider>
       <AudioGuide>
-        <div className="min-h-screen bg-stone-50">
+        <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
           {/* Top Bar */}
           <SeniorTopBar />
 
@@ -33,7 +33,7 @@ export default function SeniorLayout({
 
           {/* Audio Feedback Indicator */}
           <div 
-            className="fixed bottom-24 left-4 bg-stone-200 rounded-full p-3 shadow-lg speak-hover"
+            className="fixed bottom-24 left-4 bg-white dark:bg-slate-800 border-2 border-blue-500 dark:border-blue-400 rounded-full p-3 shadow-lg speak-hover hover:shadow-xl transition-shadow"
             data-speak-text="Audio guide is active. Hover over any button to hear what it does."
           >
             <span className="text-2xl" aria-label="Audio guide active">🔊</span>

@@ -26,20 +26,26 @@ interface StatCardProps {
 // Stat Card Component for consistent styling
 function StatCard({ title, value, icon, description, variant = "default" }: StatCardProps) {
   const variants = {
-    default: "bg-slate-800 border-slate-700",
-    warning: "bg-amber-900/50 border-amber-700",
-    success: "bg-emerald-900/50 border-emerald-700",
+    default: "bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 border-blue-200 dark:border-blue-700",
+    warning: "bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/30 dark:to-amber-800/30 border-amber-200 dark:border-amber-700",
+    success: "bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 border-emerald-200 dark:border-emerald-700",
+  };
+
+  const iconColor = {
+    default: "text-blue-600 dark:text-blue-400",
+    warning: "text-amber-600 dark:text-amber-400",
+    success: "text-emerald-600 dark:text-emerald-400",
   };
 
   return (
-    <Card className={`${variants[variant]} shadow-lg`}>
+    <Card className={`${variants[variant]} border-2`}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm font-medium text-slate-300">{title}</CardTitle>
-        {icon}
+        <CardTitle className={`text-sm font-semibold ${variant === "default" ? "text-blue-700 dark:text-blue-300" : variant === "warning" ? "text-amber-700 dark:text-amber-300" : "text-emerald-700 dark:text-emerald-300"}`}>{title}</CardTitle>
+        <div className={`${iconColor[variant]}`}>{icon}</div>
       </CardHeader>
       <CardContent>
-        <div className="text-3xl font-bold text-white">{value}</div>
-        <p className="text-xs text-slate-400 mt-1">{description}</p>
+        <div className="text-3xl font-bold text-slate-900 dark:text-white">{value}</div>
+        <p className={`text-xs mt-1 ${variant === "default" ? "text-blue-600 dark:text-blue-400" : variant === "warning" ? "text-amber-600 dark:text-amber-400" : "text-emerald-600 dark:text-emerald-400"}`}>{description}</p>
       </CardContent>
     </Card>
   );
