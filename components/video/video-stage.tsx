@@ -1,30 +1,8 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  DailyProvider,
-  useParticipantIds,
-  useLocalParticipant,
-  useDaily,
-  DailyVideo,
-  DailyAudio,
-} from "@daily-co/daily-react";
-import {
-  Phone,
-  PhoneOff,
-  Mic,
-  MicOff,
-  Video,
-  VideoOff,
-  AlertTriangle,
-  Shield,
-  Loader2,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { useSpeechMonitor, ThreatDetection } from "@/hooks/use-speech-monitor";
-import { createClient } from "@/utils/supabase/client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
 interface VideoStageProps {
   roomUrl: string;
@@ -32,6 +10,75 @@ interface VideoStageProps {
   userRole: "senior" | "buddy";
   sessionId?: string;
   onLeave?: () => void;
+}
+
+export function ZegoVideoStage({
+  roomUrl,
+  roomName,
+  userRole,
+  sessionId,
+  onLeave,
+}: VideoStageProps) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const appID = Number(process.env.NEXT_PUBLIC_ZEGOCLOUD_APP_ID);
+    const serverSecret = process.env.NEXT_PUBLIC_ZEGOCLOUD_SERVER_SECRET;
+
+    if (!appID || !serverSecret) {
+      console.error("Zegocloud credentials not configured");
+      return;
+    }
+
+    const userID = `${userRole}_${Date.now()}`;
+    const userName = userRole === "senior" ? "Senior" : "Buddy";
+
+    try {
+      const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+        appID,
+        serverSecret,
+        roomName,
+        userID,
+        userName
+      );
+
+      const zp = ZegoUIKitPrebuilt.create(kitToken);
+      
+      const container = document.getElementById("zegocloud-video-container");
+      if (!container) return;
+
+      zp.joinRoom({
+        container: container,
+        scenario: {
+          mode: ZegoUIKitPrebuilt.OneONoneCall,
+        },
+        showPreJoinView: false,
+        showScreenSharingButton: false,
+        showTextChat: true,
+        showUserList: false,
+        maxUsers: 2,
+        onLeaveRoom: () => {
+          if (onLeave) {
+            onLeave();
+          } else {
+            router.push(`/${userRole}/dashboard`);
+          }
+        },
+      });
+    } catch (error) {
+      console.error("Failed to initialize video call:", error);
+    }
+
+    return () => {
+      // Cleanup
+    };
+  }, [roomName, userRole, onLeave, router]);
+
+  return (
+    <div className="fixed inset-0 z-50 bg-slate-900">
+      <div id="zegocloud-video-container" className="w-full h-full"></div>
+    </div>
+  );
 }
 
 // Senior View - Simple, large buttons

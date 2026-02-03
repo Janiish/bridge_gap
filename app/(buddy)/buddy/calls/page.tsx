@@ -14,8 +14,7 @@ import {
   AlertTriangle,
   CheckCircle2,
 } from "lucide-react";
-import VideoStage from "@/components/video/video-stage";
-import { acceptRequestAndCreateCall } from "@/app/actions/daily";
+import { ZegoVideoStage } from "@/components/video/video-stage";
 
 interface CallRequest {
   id: string;
@@ -99,19 +98,20 @@ export default function BuddyCallsPage() {
           return;
         }
 
-        // Create the call room
-        const result = await acceptRequestAndCreateCall(request.id, user.id);
+        // Prefer senior-published call_url, else create one
+        const roomName = request.call_url || `call_${request.id}`;
 
-        if (!result.success || !result.room) {
-          setError(result.error || "Failed to create call room");
-          return;
-        }
+        // Update request with status and call_url (idempotent)
+        await supabase
+          .from("help_requests")
+          .update({ status: "accepted", call_url: roomName })
+          .eq("id", request.id);
 
         // Set active call
         setActiveCall({
-          roomUrl: result.room.url,
-          roomName: result.room.name,
-          sessionId: result.room.id,
+          roomUrl: roomName,
+          roomName,
+          sessionId: request.id,
           seniorName: request.profiles?.full_name || "Senior",
         });
       } catch (err) {
@@ -158,7 +158,7 @@ export default function BuddyCallsPage() {
   // If in a call, show the video stage
   if (activeCall) {
     return (
-      <VideoStage
+      <ZegoVideoStage
         roomUrl={activeCall.roomUrl}
         roomName={activeCall.roomName}
         userRole="buddy"

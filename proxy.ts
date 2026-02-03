@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 1) Skip Next.js internals, static assets, and API routes
@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/static") ||
     pathname.startsWith("/api") ||
-    pathname.match(/\.(ico|png|jpg|jpeg|svg|css|js)$/)
+    pathname.match(/\.(ico|png|jpg|jpeg|svg|css)$/)
   ) {
     return NextResponse.next();
   }
