@@ -33,7 +33,6 @@ interface Profile {
   id: string;
   full_name: string | null;
   role: string;
-  context_data: ProfileContextData | null;
   created_at: string;
 }
 
@@ -68,8 +67,9 @@ export default async function BuddyProfilePage() {
   }
 
   // 3. Extract data with safe defaults (no hooks - just data transformation)
-  const isVerified = profile.context_data?.verified === true;
-  const stats: ProfileStats = profile.context_data?.stats || { 
+  // TODO: context_data column doesn't exist in profiles table yet
+  const isVerified = false; // profile.context_data?.verified === true;
+  const stats: ProfileStats = { 
     calls_taken: 0, 
     rating: 0, 
     seniors_helped: 0 
