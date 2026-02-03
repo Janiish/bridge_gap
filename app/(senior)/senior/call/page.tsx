@@ -53,6 +53,9 @@ export default function SeniorCallPage() {
       const appID = Number(process.env.NEXT_PUBLIC_ZEGOCLOUD_APP_ID);
       const serverSecret = process.env.NEXT_PUBLIC_ZEGOCLOUD_SERVER_SECRET;
 
+      console.log("Zegocloud AppID:", appID);
+      console.log("Zegocloud Secret exists:", !!serverSecret);
+
       if (!appID || !serverSecret) {
         setError("Video calls are not configured. Please contact support.");
         setState("error");
