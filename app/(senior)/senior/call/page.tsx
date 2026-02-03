@@ -50,13 +50,16 @@ export default function SeniorCallPage() {
         window.speechSynthesis.speak(utterance);
       }
 
-      const appID = Number(process.env.NEXT_PUBLIC_ZEGOCLOUD_APP_ID || "1480174957");
-      const serverSecret = process.env.NEXT_PUBLIC_ZEGOCLOUD_SERVER_SECRET || "79a3bc3630854a66d294e2b3a3b9579b";
+      const appIDEnv = process.env.NEXT_PUBLIC_ZEGOCLOUD_APP_ID;
+      const secretEnv = process.env.NEXT_PUBLIC_ZEGOCLOUD_SERVER_SECRET;
+      
+      // Use hardcoded fallback if env vars are empty/undefined
+      const appID = Number(appIDEnv && appIDEnv.trim() ? appIDEnv : "1480174957");
+      const serverSecret = (secretEnv && secretEnv.trim() ? secretEnv : "79a3bc3630854a66d294e2b3a3b9579b");
 
-      console.log("Zegocloud AppID:", appID);
-      console.log("Zegocloud Secret exists:", !!serverSecret);
+      console.log("AppID:", appID, "Secret length:", serverSecret?.length);
 
-      if (!appID || !serverSecret) {
+      if (!appID || appID === 0 || !serverSecret) {
         setError("Video calls are not configured. Please contact support.");
         setState("error");
         return;
