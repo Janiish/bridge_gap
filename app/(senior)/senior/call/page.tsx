@@ -50,8 +50,8 @@ export default function SeniorCallPage() {
         window.speechSynthesis.speak(utterance);
       }
 
-      const appID = Number(process.env.NEXT_PUBLIC_ZEGOCLOUD_APP_ID);
-      const serverSecret = process.env.NEXT_PUBLIC_ZEGOCLOUD_SERVER_SECRET;
+      const appID = Number(process.env.NEXT_PUBLIC_ZEGOCLOUD_APP_ID || "1480174957");
+      const serverSecret = process.env.NEXT_PUBLIC_ZEGOCLOUD_SERVER_SECRET || "79a3bc3630854a66d294e2b3a3b9579b";
 
       console.log("Zegocloud AppID:", appID);
       console.log("Zegocloud Secret exists:", !!serverSecret);
