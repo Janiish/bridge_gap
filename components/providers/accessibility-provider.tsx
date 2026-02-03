@@ -64,23 +64,8 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
           setUserId(user.id);
-          try {
-            const { data: profile } = await supabase
-              .from("profiles")
-              .select("context_data")
-              .eq("id", user.id)
-              .single();
-
-            if (profile?.context_data?.accessibility) {
-              const cloudSettings = profile.context_data.accessibility as AccessibilitySettings;
-              setSettings(cloudSettings);
-              applySettings(cloudSettings);
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudSettings));
-            }
-          } catch (supabaseError) {
-            // context_data column may not exist yet, silently continue
-            console.warn("Could not load accessibility settings from Supabase:", supabaseError);
-          }
+          // Note: context_data column may not exist in profiles table yet
+          // Settings are loaded from localStorage for now
         }
       } catch (e) {
         console.error("Failed to load cloud settings:", e);
@@ -108,29 +93,28 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
 
       // Save to Supabase if user is logged in
       if (userId) {
-        try {
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("context_data")
-            .eq("id", userId)
-            .single();
-
-          const currentContextData = profile?.context_data || {};
-          const updatedContextData = {
-            ...currentContextData,
-            accessibility: newSettings,
-          };
-
-          await supabase
-            .from("profiles")
-            .update({ context_data: updatedContextData })
-            .eq("id", userId);
-        } catch (e) {
-          console.error("Failed to save to cloud:", e);
-        }
+        // TODO: When context_data column is added to profiles table, uncomment this:
+        // try {
+        //   const { data: profile } = await supabase
+        //     .from("profiles")
+        //     .select("context_data")
+        //     .eq("id", userId)
+        //     .single();
+        //   const currentContextData = profile?.context_data || {};
+        //   const updatedContextData = {
+        //     ...currentContextData,
+        //     accessibility: newSettings,
+        //   };
+        //   await supabase
+        //     .from("profiles")
+        //     .update({ context_data: updatedContextData })
+        //     .eq("id", userId);
+        // } catch (e) {
+        //   console.error("Failed to save to cloud:", e);
+        // }
       }
     },
-    [userId, supabase, applySettings]
+    [userId, applySettings]
   );
 
   const setFontSize = useCallback(
